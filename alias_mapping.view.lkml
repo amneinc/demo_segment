@@ -1,8 +1,8 @@
 view: page_aliases_mapping {
   derived_table: {
     sql_trigger_value: select current_date ;;
-    sortkeys: ["looker_visitor_id", "alias"]
-    distribution: "alias"
+    #sortkeys: ["looker_visitor_id", "alias"]
+    #distribution: "alias"
     sql: with
 
       -- Establish all child-to-parent edges from tables (tracks, pages, aliases)
@@ -10,39 +10,40 @@ view: page_aliases_mapping {
         select anonymous_id
         , user_id
         , received_at as received_at
-        from segment.tracks
+        from javascript.tracks
 
         union
 
         select user_id
           , null
           , received_at
-        from segment.tracks
+        from javascript.tracks
 
         union
 
         select anonymous_id
           , user_id
           , received_at
-        from segment.pages
+        from javascript.pages
 
         union
 
         select user_id
         , null
         , received_at
-        from segment.pages
+        from javascript.pages
       )
 
       select
                   distinct anonymous_id as alias
-                  , coalesce(first_value(user_id ignore nulls)
+                  , coalesce(first_value(user_id)
                   over(
                     partition by anonymous_id
                     order by received_at
                     rows between unbounded preceding and unbounded following),anonymous_id) as looker_visitor_id
       from all_mappings
        ;;
+    indexes: ["looker_visitor_id", "alias"]
   }
 
   # Anonymous ID

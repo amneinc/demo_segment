@@ -1,7 +1,8 @@
 view: sessions_pg_trk {
   derived_table: {
-    sortkeys: ["session_start_at"]
-    distribution: "looker_visitor_id"
+    #sortkeys: ["session_start_at"]
+    #distribution: "looker_visitor_id"
+    indexes: ["session_start_at"]
     sql_trigger_value: select count(*) from ${mapped_events.SQL_TABLE_NAME} ;;
     sql: select row_number() over(partition by looker_visitor_id order by received_at) || ' - '||  looker_visitor_id as session_id
       , looker_visitor_id
@@ -50,7 +51,7 @@ where (idle_time_minutes > 30 or idle_time_minutes is null)
 
   dimension: session_duration_minutes {
     type: number
-    sql: DATEDIFF(minutes, ${start_time}::timestamp, ${session_pg_trk_facts.end_time}::timestamp) ;;
+    sql: DATE_PART('minute', ${session_pg_trk_facts.end_time}::timestamp - ${start_time}::timestamp) ;;
   }
 
   measure: count {

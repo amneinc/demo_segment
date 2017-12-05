@@ -1,8 +1,8 @@
 view: user_session_facts {
   derived_table: {
     sql_trigger_value: SELECT CURRENT_DATE ;;
-    distribution: "looker_visitor_id"
-    sortkeys: ["looker_visitor_id"]
+    #distribution: "looker_visitor_id"
+    #sortkeys: ["looker_visitor_id"]
     sql: SELECT
         looker_visitor_id
         , MIN(DATE(s.session_start_at)) as first_date
@@ -13,6 +13,7 @@ view: user_session_facts {
       ON s.session_id = sf.session_id
       GROUP BY 1
        ;;
+    indexes: ["looker_visitor_id"]
   }
 
   #     Define your dimensions and measures here, like this:

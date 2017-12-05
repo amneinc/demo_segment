@@ -1,4 +1,4 @@
-connection: "segment_sources"
+connection: "segment"
 
 # include all views in this project
 include: "*.view"
@@ -14,7 +14,7 @@ explore: track_facts {
     view_label: "Events"
     type: left_outer
     relationship: one_to_one
-    sql_on: tracks.uuid = track_facts.uuid and
+    sql_on: tracks.id = track_facts.uuid and
       tracks.received_at = track_facts.received_at and
       tracks.anonymous_id = track_facts.anonymous_id
        ;;

@@ -1,5 +1,5 @@
 view: pages {
-  sql_table_name: segment.pages ;;
+  sql_table_name: javascript.pages ;;
 
   dimension: id {
     primary_key: yes
@@ -9,7 +9,7 @@ view: pages {
 
   dimension: event_id {
     type: string
-    sql: CONCAT(${received_raw}, ${uuid}) ;;
+    sql: CONCAT(${received_raw}, ${id}) ;;
   }
 
   dimension: anonymous_id {
@@ -67,7 +67,7 @@ view: pages {
   dimension: uuid {
     type: number
     value_format_name: id
-    sql: ${TABLE}.uuid ;;
+    sql: ${TABLE}.id ;;
   }
 
   measure: count {

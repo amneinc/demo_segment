@@ -3,8 +3,8 @@
 view: track_facts {
   derived_table: {
     sql_trigger_value: select count(*) from ${sessions_trk.SQL_TABLE_NAME} ;;
-    sortkeys: ["event_id"]
-    distribution: "looker_visitor_id"
+    #sortkeys: ["event_id"]
+    #distribution: "looker_visitor_id"
     sql: select t.anonymous_id
           , t.received_at
           , t.event_id
@@ -19,6 +19,7 @@ view: track_facts {
           and t.received_at >= s.session_start_at
           and (t.received_at < s.next_session_start_at or s.next_session_start_at is null)
        ;;
+    indexes: ["event_id"]
   }
 
   dimension: event_id {

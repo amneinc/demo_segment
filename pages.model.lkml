@@ -1,4 +1,4 @@
-connection: "segment_sources"
+connection: "segment"
 
 # include all views in this project
 # - include: "*.dashboard.lookml"  # include all dashboards in this project
@@ -13,7 +13,7 @@ explore: event_facts {
   join: pages {
     view_label: "Events"
     type: left_outer
-    sql_on: event_facts.uuid = pages.uuid
+    sql_on: event_facts.uuid = pages.id
       and event_facts.received_at = pages.received_at
       and event_facts.anonymous_id = pages.anonymous_id
        ;;
