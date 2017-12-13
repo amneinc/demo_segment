@@ -1,16 +1,17 @@
 view: page_facts {
   derived_table: {
-    sortkeys: ["received_at"]
-    distribution: "looker_visitor_id"
+    #sortkeys: ["received_at"]
+    #distribution: "looker_visitor_id"
     sql_trigger_value: select count(*) from ${mapped_events.SQL_TABLE_NAME} ;;
     sql: SELECT e.event_id AS event_id
       , e.looker_visitor_id
       , e.received_at
       , CASE
-          WHEN DATEDIFF(seconds, e.received_at, LEAD(e.received_at) OVER(PARTITION BY e.looker_visitor_id ORDER BY e.received_at)) > 30*60 THEN NULL
-          ELSE DATEDIFF(seconds, e.received_at, LEAD(e.received_at) OVER(PARTITION BY e.looker_visitor_id ORDER BY e.received_at)) END AS lead_idle_time_condition
+          WHEN DATE_PART('second', e.received_at - LEAD(e.received_at) OVER(PARTITION BY e.looker_visitor_id ORDER BY e.received_at)) > 30*60 THEN NULL
+          ELSE DATE_PART('second', e.received_at - LEAD(e.received_at) OVER(PARTITION BY e.looker_visitor_id ORDER BY e.received_at)) END AS lead_idle_time_condition
 FROM ${mapped_events.SQL_TABLE_NAME} AS e
  ;;
+    indexes: ["received_at"]
   }
 
   dimension: event_id {
@@ -22,6 +23,12 @@ FROM ${mapped_events.SQL_TABLE_NAME} AS e
   dimension: duration_page_view_seconds {
     type: number
     sql: ${TABLE}.lead_idle_time_condition ;;
+  }
+
+  dimension: duration_page_view {
+    type: number
+    sql: ${TABLE}.lead_idle_time_condition ;;
+    value_format: "h:mm:ss"
   }
 
   dimension: is_last_page {

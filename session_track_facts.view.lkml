@@ -3,8 +3,8 @@
 view: session_trk_facts {
   derived_table: {
     sql_trigger_value: select count(*) from ${track_facts.SQL_TABLE_NAME} ;;
-    sortkeys: ["session_id"]
-    distribution: "session_id"
+    #sortkeys: ["session_id"]
+    #distribution: "session_id"
     sql: SELECT s.session_id
         , MAX(map.received_at) AS ended_at
         , count(distinct map.event_id) AS num_pvs
@@ -16,6 +16,7 @@ view: session_trk_facts {
       LEFT JOIN ${track_facts.SQL_TABLE_NAME} as map on map.session_id = s.session_id
       GROUP BY 1
        ;;
+    indexes: ["session_id"]
   }
 
   dimension: session_id {

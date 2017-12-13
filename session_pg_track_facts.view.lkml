@@ -2,8 +2,8 @@ view: session_pg_trk_facts {
   derived_table: {
     # Rebuilds after track_facts rebuilds
     sql_trigger_value: select COUNT(*) from ${event_facts.SQL_TABLE_NAME} ;;
-    sortkeys: ["session_id"]
-    distribution: "session_id"
+    #sortkeys: ["session_id"]
+    #distribution: "session_id"
     sql: select s.session_id
         , first_referrer
         , max(t2s.received_at) as end_at
@@ -13,6 +13,7 @@ view: session_pg_trk_facts {
           using(session_id)
       group by 1,2
        ;;
+    indexes: ["session_id"]
   }
 
   # ----- Dimensions -----
@@ -71,7 +72,7 @@ view: session_pg_trk_facts {
 
   dimension: session_duration_minutes {
     type: number
-    sql: datediff(minutes, ${sessions_pg_trk.start_raw}, ${end_raw}) ;;
+    sql: DATE_PART('minute', ${end_raw} - ${sessions_pg_trk.start_raw}) ;;
   }
 
   dimension: session_duration_minutes_tiered {

@@ -1,5 +1,5 @@
 view: tracks {
-  sql_table_name: segment.tracks ;;
+  sql_table_name: javascript.tracks ;;
 
   dimension: anonymous_id {
     type: string
@@ -31,12 +31,12 @@ view: tracks {
   dimension: uuid {
     type: number
     value_format_name: id
-    sql: ${TABLE}.uuid ;;
+    sql: ${TABLE}.id ;;
   }
 
   dimension: event_id {
     type: string
-    sql: CONCAT(${received_raw}, ${uuid}) ;;
+    sql: CONCAT(${received_raw}, ${TABLE}.id) ;;
   }
 
   measure: count {
@@ -48,7 +48,7 @@ view: tracks {
 
   dimension: weeks_since_first_visit {
     type: number
-    sql: FLOOR(DATEDIFF(day,${user_session_facts.first_date}, ${received_date})/7) ;;
+    sql: FLOOR(DATE_PART('day',${received_date} - ${user_session_facts.first_date})/7) ;;
   }
 
   dimension: is_new_user {
