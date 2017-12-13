@@ -7,7 +7,7 @@ view: event_list {
     distribution_style: all
     sql: SELECT
         event as event_types
-      FROM segment.tracks
+      FROM ${tracks.SQL_TABLE_NAME}
       GROUP BY 1
        ;;
     indexes: ["event_types"]
