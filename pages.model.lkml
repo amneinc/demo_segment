@@ -55,3 +55,20 @@ explore: event_facts {
     relationship: many_to_one
   }
 }
+
+explore: pages {
+  view_label: "Page Views"
+  label: "Page Views"
+  join: page_facts {
+    view_label: "Page Facts"
+    type: inner
+    sql_on:${pages.event_id} = ${page_facts.event_id};;
+    relationship: one_to_one
+  }
+  join: identifies {
+    view_label: "Identities"
+    type: inner
+    sql_on: ${pages.user_id}= ${identifies.user_id} ;;
+    relationship: one_to_one
+  }
+}

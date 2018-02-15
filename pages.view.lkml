@@ -32,9 +32,15 @@ view: pages {
     sql: ${TABLE}.context_campaign_name ;;
   }
 
+  dimension: context_ip {
+    type: string
+    sql: ${TABLE}.context_ip ;;
+  }
+
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
+  #  order_by_field: count
   }
 
   dimension_group: received {
@@ -94,5 +100,10 @@ view: pages {
   measure: count_distinct_pageviews {
     type: number
     sql: COUNT(DISTINCT CONCAT(${page_facts.looker_visitor_id}, ${url})) ;;
+  }
+
+  measure: count_request_address {
+    type: number
+    sql: COUNT() ;;
   }
 }

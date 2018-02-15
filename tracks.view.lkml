@@ -68,7 +68,7 @@ view: tracks {
 
   filter: event1 {
     suggestions: [
-      "added_item",
+      "load page",
       "app_became_active",
       "app_entered_background",
       "app_entered_foreground",
