@@ -1,10 +1,24 @@
 view: pages {
-  sql_table_name: javascript.pages ;;
+  derived_table: {
+    sql: select *,CASE WHEN name='Request Offer Address' THEN 'Request - step 0 Address'
+     WHEN name='Request Offer Home' THEN 'Request - step 1 Home'
+     WHEN name='Request Offer Sale' THEN 'Request - step 2 Sale'
+     WHEN name='Request Offer You' THEN 'Request - step 3 You'
+     WHEN name='Request Offer Confirmation' THEN 'Request - step 4 Confirmation'
+END AS Conversion_steps
+from javascript.pages
+ ;;
+  }
 
   dimension: id {
     primary_key: yes
     type: string
     sql: ${TABLE}.id ;;
+  }
+
+  dimension: Conversion_steps {
+    type: string
+    sql: ${TABLE}.Conversion_steps ;;
   }
 
   dimension: event_id {
