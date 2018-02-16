@@ -22,13 +22,13 @@ FROM ${mapped_events.SQL_TABLE_NAME} AS e
 
   dimension: duration_page_view_seconds {
     type: number
-    sql: ${TABLE}.lead_idle_time_condition ;;
+    sql: -${TABLE}.lead_idle_time_condition ;;
   }
 
   dimension: duration_page_view {
     type: number
-    sql: ${TABLE}.lead_idle_time_condition ;;
-    value_format: "h:mm:ss"
+    sql: -${TABLE}.lead_idle_time_condition ;;
+  #  value_format: "h:mm:ss"
   }
 
   dimension: is_last_page {

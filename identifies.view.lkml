@@ -10,6 +10,25 @@ view: identifies {
     type: string
     sql: ${TABLE}.email ;;
   }
+  dimension: address {
+    type: string
+    sql: ${TABLE}.address ;;
+  }
+
+  dimension: first_name {
+    type: string
+    sql: ${TABLE}.first_name ;;
+  }
+
+  dimension: last_name {
+    type: string
+    sql: ${TABLE}.last_name ;;
+  }
+
+  dimension: context_page_referrer {
+    type: string
+    sql: ${TABLE}.context_page_referrer ;;
+  }
 
   dimension_group: received {
     type: time
