@@ -1,10 +1,11 @@
 view: pages {
   derived_table: {
-    sql: select *,CASE WHEN name='Request Offer Address' THEN 'Request - step 0 Address'
+    sql: select *, CASE WHEN name='Request Offer Address' THEN 'Request - step 0 Address'
      WHEN name='Request Offer Home' THEN 'Request - step 1 Home'
      WHEN name='Request Offer Sale' THEN 'Request - step 2 Sale'
      WHEN name='Request Offer You' THEN 'Request - step 3 You'
      WHEN name='Request Offer Confirmation' THEN 'Request - step 4 Confirmation'
+     WHEN name='Home Profiles' THEN 'Home Profile Page'
 END AS Conversion_steps
 from javascript.pages
  ;;
