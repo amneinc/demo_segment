@@ -30,6 +30,17 @@ view: identifies {
     sql: ${TABLE}.context_page_referrer ;;
   }
 
+  dimension: context_page_path {
+    type: string
+    sql: ${TABLE}.context_page_path ;;
+  }
+
+  dimension: context_page_url {
+    type: string
+    sql: ${TABLE}.context_page_url ;;
+  }
+
+
   dimension_group: received {
     type: time
     timeframes: [time, date, week, month]
