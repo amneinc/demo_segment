@@ -71,4 +71,10 @@ explore: pages {
     sql_on: ${pages.user_id}= ${identifies.user_id} ;;
     relationship: one_to_one
   }
+  join: 4th_mailer {
+    view_label: "Mailers"
+    type: inner
+    sql_on: ${identifies.address} LIKE '%' || ${4th_mailer.address1} || '%' ;;
+    relationship: one_to_one
+  }
 }

@@ -5,7 +5,6 @@ view: pages {
      WHEN name='Request Offer Sale' THEN 'Request - step 2 Sale'
      WHEN name='Request Offer You' THEN 'Request - step 3 You'
      WHEN name='Request Offer Confirmation' THEN 'Request - step 4 Confirmation'
-     WHEN name='Home Profiles' THEN 'Home Profile Page'
 END AS Conversion_steps
 from javascript.pages
  ;;
@@ -21,6 +20,50 @@ from javascript.pages
     type: string
     sql: ${TABLE}.Conversion_steps ;;
   }
+
+  dimension: device {
+    type: string
+    sql: CASE WHEN ${TABLE}.context_user_agent LIKE '%Windows%' THEN 'Windows'
+              WHEN ${TABLE}.context_user_agent LIKE '%Macintosh%' THEN 'Mac'
+              WHEN ${TABLE}.context_user_agent LIKE '%iPhone%' THEN 'iPhone'
+              WHEN ${TABLE}.context_user_agent LIKE '%iPad%' THEN 'iPad'
+              WHEN ${TABLE}.context_user_agent LIKE '%Linux%' THEN 'Linux'
+              WHEN ${TABLE}.context_user_agent LIKE '%Android%' THEN 'Android'
+              ELSE 'Other'
+        END ;;
+  }
+
+  dimension: browser {
+    type: string
+    sql: CASE WHEN ${TABLE}.context_user_agent LIKE '%Firefox%' THEN 'Firefox'
+              WHEN ${TABLE}.context_user_agent LIKE '%Chrome%' THEN 'Chrome'
+              WHEN ${TABLE}.context_user_agent LIKE '%Safari%' AND ${TABLE}.context_user_agent NOT LIKE '%Chrome%' THEN 'Safari'
+              ELSE 'Other'
+        END;;
+  }
+
+  dimension: conversion_steps_from_mailer_land_page {
+    type: string
+    sql: CASE WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' THEN 'step 0 - Mailer Land Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' THEN 'step 1 - Request Address Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' THEN 'step 2 - Request Home Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' THEN 'step 3 - Request Sale Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' THEN 'step 4 - Request You Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' AND ${TABLE}.url = 'https://www.amne.co/request/confirmation' THEN 'step 5 - Request Confirmation Page'
+        END;;
+  }
+
+  dimension: conversion_steps_from_hpp {
+    type: string
+    sql: CASE WHEN ${TABLE}.url LIKE 'https://www.amne.co/homes/%' AND (NOT LIKE '%browse%') AND (NOT LIKE '%/homes/austin/%') THEN 'step 0 - HPP'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' THEN 'step 1 - Request Address Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' THEN 'step 2 - Request Home Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' THEN 'step 3 - Request Sale Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' THEN 'step 4 - Request You Info Page'
+              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' AND ${TABLE}.url = 'https://www.amne.co/request/confirmation' THEN 'step 5 - Request Confirmation Page'
+        END;;
+  }
+
 
   dimension: event_id {
     type: string

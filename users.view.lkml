@@ -29,11 +29,32 @@ view: users {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: device {
+    type: string
+    sql: CASE WHEN ${TABLE}.context_user_agent LIKE '%Windows%' THEN 'Windows'
+              WHEN ${TABLE}.context_user_agent LIKE '%Macintosh%' THEN 'Mac'
+              WHEN ${TABLE}.context_user_agent LIKE '%iPhone%' THEN 'iPhone'
+              WHEN ${TABLE}.context_user_agent LIKE '%iPad%' THEN 'iPad'
+              WHEN ${TABLE}.context_user_agent LIKE '%Linux%' THEN 'Linux'
+              WHEN ${TABLE}.context_user_agent LIKE '%Android%' THEN 'Android'
+              ELSE 'Other'
+        END ;;
+  }
+
+  dimension: browser {
+    type: string
+    sql: CASE WHEN ${TABLE}.context_user_agent LIKE '%Firefox%' THEN 'Firefox'
+              WHEN ${TABLE}.context_user_agent LIKE '%Chrome%' THEN 'Chrome'
+              WHEN ${TABLE}.context_user_agent LIKE '%Safari%' AND ${TABLE}.context_user_agent NOT LIKE '%Chrome%' THEN 'Safari'
+              ELSE 'Other'
+        END;;
+  }
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
     tags: ["email"]
   }
+
 
   dimension: external_id {
     type: string

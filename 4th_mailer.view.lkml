@@ -1,5 +1,5 @@
 view: 4th_mailer {
-  sql_table_name: public."4th_mailer" ;;
+  sql_table_name: javascript."4th_mailer" ;;
 
   dimension: address1 {
     type: string
@@ -19,11 +19,6 @@ view: 4th_mailer {
   dimension: first_name {
     type: string
     sql: ${TABLE}."first name" ;;
-  }
-
-  dimension: index {
-    type: number
-    sql: ${TABLE}.index ;;
   }
 
   dimension: last_name {
@@ -56,11 +51,6 @@ view: 4th_mailer {
     sql: ${TABLE}.state ;;
   }
 
-  dimension: unnamed_0 {
-    type: number
-    sql: ${TABLE}."unnamed: 0"
-      ;;
-  }
 
   dimension: zipcode {
     type: zipcode
