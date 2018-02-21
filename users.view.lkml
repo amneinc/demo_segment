@@ -13,6 +13,11 @@ view: users {
     sql: ${TABLE}.active ;;
   }
 
+  dimension: address {
+    type: string
+    sql: ${TABLE}.address ;;
+  }
+
   dimension: alias {
     type: string
     sql: ${TABLE}.alias ;;

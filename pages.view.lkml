@@ -55,13 +55,9 @@ from javascript.pages
 
   dimension: conversion_steps_from_hpp {
     type: string
-    sql: CASE WHEN ${TABLE}.url LIKE 'https://www.amne.co/homes/%' AND (NOT LIKE '%browse%') AND (NOT LIKE '%/homes/austin/%') THEN 'step 0 - HPP'
-              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' THEN 'step 1 - Request Address Page'
-              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' THEN 'step 2 - Request Home Info Page'
-              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' THEN 'step 3 - Request Sale Info Page'
-              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' THEN 'step 4 - Request You Info Page'
-              WHEN ${TABLE}.url = 'https://www.amne.co/free-offer' AND ${TABLE}.url = 'https://www.amne.co/request/address' AND ${TABLE}.url = 'https://www.amne.co/request/home' AND ${TABLE}.url = 'https://www.amne.co/request/sale' AND ${TABLE}.url = 'https://www.amne.co/request/you' AND ${TABLE}.url = 'https://www.amne.co/request/confirmation' THEN 'step 5 - Request Confirmation Page'
-        END;;
+    sql: CASE WHEN ${TABLE}.url LIKE 'https://www.amne.co/homes/%' AND ${TABLE}.url NOT LIKE '%/homes/austin%' AND ${TABLE}.url NOT LIKE '%/browse/%' THEN 'step 0 - HPP'
+              WHEN ${TABLE}.url LIKE 'https://www.amne.co/homes/%' AND ${TABLE}.url NOT LIKE '%/homes/austin%' AND ${TABLE}.url NOT LIKE '%/browse/%' AND  ${TABLE}.url LIKE '%https://www.amne.co/request/address%' THEN 'step 1 - Request Address Page'
+    END;;
   }
 
 
@@ -136,7 +132,6 @@ from javascript.pages
 
   measure: count {
     type: count
-    drill_fields: [id, context_campaign_name, name, users.id]
   }
 
   measure: count_visitors {

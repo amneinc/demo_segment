@@ -88,6 +88,6 @@ view: identifies {
 
   measure: count {
     type: count
-    drill_fields: [users.id]
+    drill_fields: [users.id,address]
   }
 }

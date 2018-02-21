@@ -65,16 +65,16 @@ explore: pages {
     sql_on:${pages.event_id} = ${page_facts.event_id};;
     relationship: one_to_one
   }
-  join: identifies {
+  join: users {
     view_label: "Identities"
     type: inner
-    sql_on: ${pages.user_id}= ${identifies.user_id} ;;
+    sql_on: ${pages.user_id}= ${users.id} ;;
     relationship: one_to_one
   }
   join: 4th_mailer {
     view_label: "Mailers"
     type: inner
-    sql_on: ${identifies.address} LIKE '%' || ${4th_mailer.address1} || '%' ;;
+    sql_on: ${users.address} LIKE '%' || ${4th_mailer.address1} || '%' ;;
     relationship: one_to_one
   }
 }
